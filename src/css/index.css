@@ -4,8 +4,8 @@
   line-height: 24px;
   font-weight: 400;
 
-  color: #0f0f0f;
-  background-color: #f6f6f6;
+  /* color: #0f0f0f;
+  background-color: #f6f6f6; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,7 +23,7 @@
   text-align: center;
 }
 
-.logo {
+/* .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -82,9 +82,9 @@ button {
 
 #greet-input {
   margin-right: 5px;
-}
+} */
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     color: #f6f6f6;
     background-color: #2f2f2f;
@@ -102,7 +102,7 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
-}
+} */
 
 
 /* :root {

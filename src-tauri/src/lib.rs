@@ -4,8 +4,15 @@
 //     format!("Hello, {}! You've been greeted from Rust!", name)
 // }
 
+// For time tracker
 use serde::{Deserialize, Serialize};
 use sysinfo::{Process, ProcessStatus, System};
+
+// For video
+use std::sync::mpsc;
+use std::thread;
+
+// TIME TRACKER
 
 #[cfg(target_os = "macos")]
 const APPLICATION_DIRS: &[&str] = &["/Applications", "/Users/*/Applications"];
@@ -110,12 +117,35 @@ fn list_process() -> Vec<AppInfo> {
   processes
 }
 
+// VIDEO
+
+#[tauri::command]
+fn process_file_chunk(chunk: Vec<u8>, chunk_index: usize, total_chunks: usize, file_name: String) {
+    // Simulate using channels to handle chunks
+    let (sender, receiver) = mpsc::channel();
+
+    // Spawn a new thread to process the data
+    thread::spawn(move || {
+        // Send the chunk data through the channel
+        sender.send((chunk, chunk_index)).expect("Failed to send chunk");
+
+        // Receive and process each chunk
+        for (_chunk_data, index) in receiver {
+            println!("Processing chunk {}/{} of file: {}", index + 1, total_chunks, file_name);
+            // Here, you can handle each chunk (e.g., write to a file, process data, etc.)
+        }
+    });
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
     .plugin(tauri_plugin_shell::init())
     // .invoke_handler(tauri::generate_handler![greet])
-    .invoke_handler(tauri::generate_handler![list_process, max_memory, max_running_process])
+    .invoke_handler(tauri::generate_handler![
+      list_process, max_memory, max_running_process,
+      process_file_chunk
+    ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

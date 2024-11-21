@@ -16,7 +16,7 @@ export default defineConfig({
 		main: "./src/main.jsx"
 	},
 	resolve: {
-		extensions: ["...", ".ts", ".tsx", ".jsx"]
+		extensions: ["...", ".ts", ".tsx", ".js", ".jsx"]
 	},
 	module: {
 		rules: [
@@ -52,7 +52,17 @@ export default defineConfig({
 	},
 	plugins: [
 		new rspack.HtmlRspackPlugin({
-			template: "./index.html"
+			template: "./index.html",
+			favicon: "./static/favicon.png",
+			publicPath: "./"
+		}),
+		new rspack.CopyRspackPlugin({
+			patterns: [
+			  {
+				from: 'static',
+				to: "dist"
+			  },
+			],
 		}),
 		isDev ? new RefreshPlugin() : null
 	].filter(Boolean),
